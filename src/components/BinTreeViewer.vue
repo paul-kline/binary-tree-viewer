@@ -44,6 +44,7 @@ export default class BinTreeViewer extends Vue {
     this.cleanup();
   }
   pushHist() {
+    if (!this.myTree) return;
     this.$router.push({
       name: "binTreeView",
       query: { tree: JSON.stringify(this.myTree.toList()) }

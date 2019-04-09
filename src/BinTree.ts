@@ -3,6 +3,16 @@ export default class BinTree<T> {
   right: BinTree<T> | null;
   val: T;
   compareFn: (a: T, b: T) => number = (a, b) => (a > b ? 1 : a < b ? -1 : 0);
+  public static compareFnFromType<T>(val: T) {
+    if (typeof val == "number") {
+      //currently the default;
+      console.log("using num compare)");
+      return (a: number, b: number) => a - b;
+    } else if (typeof val == "string") {
+      console.log("I think this is a string", val);
+      return (a: string, b: string) => a.localeCompare(b);
+    }
+  }
   constructor(val: T, left: BinTree<T> | null, right: BinTree<T> | null, compareFn?: (a: T, b: T) => number) {
     this.val = val;
     this.left = left;
@@ -10,12 +20,7 @@ export default class BinTree<T> {
     if (compareFn) {
       this.compareFn = compareFn;
     } else {
-      if (typeof val == "number") {
-        //currently the default;
-        this.compareFn = (a, b) => (a > b ? 1 : a < b ? -1 : 0);
-      } else if (typeof val == "string") {
-        this.compareFn = (a, b) => (a as any).localeCompare(b);
-      }
+      this.compareFn = BinTree.compareFnFromType(val) as any;
     }
   }
   removeLeftMost(): BinTree<T> {
@@ -91,7 +96,24 @@ export default class BinTree<T> {
       }
     }
   }
-  insert(t: T): any {
+  insert(t: T) {
+    const v = this.compareFn(t, this.val);
+    if (v <= 0) {
+      if (this.left) {
+        this.left.insert(t);
+      } else {
+        this.left = new BinTree(t, null, null, this.compareFn);
+      }
+    } else {
+      //it's greater
+      if (this.right) {
+        this.right.insert(t);
+      } else {
+        this.right = new BinTree(t, null, null, this.compareFn);
+      }
+    }
+  }
+  _insert(t: T): any {
     const v = this.compareFn(t, this.val);
     //negative go left. positive go right. 0 we are the same.
     if (v < 0) {
@@ -174,6 +196,23 @@ export default class BinTree<T> {
       return this.val;
     }
   }
+  public leftRotation(t: T) {
+    const v = this.compareFn(t, this.val);
+    if (v < 0) {
+      //look for this value to the left.
+    } else if (v > 0) {
+      //look for it to the right.
+    } else {
+      throw new Error("isn't supposed to be me aka top node.");
+    }
+    if (l) {
+      const lv = this.compareFn(t, l.val);
+      if (lv == 0) {
+        //need to do rotation around l.
+      } else {
+      }
+    }
+  }
   public toList(lvl: number = 0, ls: T[][] = []): T[] {
     if (ls && !ls[lvl]) {
       ls[lvl] = [];
@@ -223,6 +262,9 @@ export default class BinTree<T> {
     // if (compareFn) {
     //   this.compareFn = compareFn;
     // }
+    if (!compareFn) {
+      compareFn = BinTree.compareFnFromType(ls[0]) as any;
+    }
     const sorted = ls.sort(compareFn);
     const fromListHelper = (ls: T[]): BinTree<T> | null => {
       if (!ls || ls.length == 0) {

@@ -23,11 +23,11 @@
         <div class="node card shadow rounded m-1 p-1" ref="node">{{node.val}}</div>
       </div>
       <div class="flex kids">
-        <div v-if="node.left" ref="left">
+        <div v-if="node.left" ref="left" class="kid">
           <BinTreeComponent ref="vue-left" :node="node.left"/>
         </div>
         <div v-else-if="node.onlyRight" :style="styleObj"></div>
-        <div v-if="node.right" ref="right">
+        <div v-if="node.right" ref="right" class="kid">
           <BinTreeComponent ref="vue-right" :node="node.right"/>
         </div>
         <div v-else-if="node.onlyLeft" :style="styleObj"></div>
