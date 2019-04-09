@@ -43,6 +43,7 @@ export default class App extends Vue {
   mounted() {
     this.setTreeFromQuery();
     console.log(this.$route);
+    (window as any).tree = this.tree;
   }
 }
 </script>

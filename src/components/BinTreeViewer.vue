@@ -24,6 +24,7 @@ export default class BinTreeViewer extends Vue {
   ] as BinTreeComponent<number>;
   mounted() {
     (window as any).viewer = this;
+    console.log("just set viewer");
     this.myTree = this.tree;
     this.treeComp = this.$refs["bintreecomp"] as BinTreeComponent<number>;
     this.redraw();
