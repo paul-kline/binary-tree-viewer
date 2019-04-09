@@ -198,20 +198,24 @@ export default class BinTree<T> {
   }
   public leftRotation(t: T) {
     const v = this.compareFn(t, this.val);
+    let child = null;
     if (v < 0) {
       //look for this value to the left.
+      child = this.left;
     } else if (v > 0) {
       //look for it to the right.
+      child = this.right;
     } else {
       throw new Error("isn't supposed to be me aka top node.");
     }
-    if (l) {
-      const lv = this.compareFn(t, l.val);
-      if (lv == 0) {
-        //need to do rotation around l.
-      } else {
+    if(child && child.compareFn(t,child.val) == 0){
+      //must rotate child!
+      if(v < 0){
+        this.left = child.right;
+        
       }
     }
+    
   }
   public toList(lvl: number = 0, ls: T[][] = []): T[] {
     if (ls && !ls[lvl]) {
